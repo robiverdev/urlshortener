@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 	"log"
@@ -20,8 +21,22 @@ func main() {
 	log.Fatal(err)
 }
 
+type ShortenRequest struct {
+	URL string `json:"url"`
+}
+
 func shortenHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("POST shortening")
+	var req ShortenRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid JSON", http.StatusBadRequest)
+	}
+
+	shortCode := "abc123" // TODO: make this random
+	urlStore[shortCode] = req.URL
+	if err := json.NewEncoder(w).Encode(map[string]string{"short_code": shortCode}); err != nil {
+		log.Printf("Error encoding response: %v", err)
+	}
+
 }
 
 func redirectHandler(w http.ResponseWriter, r *http.Request) {
