@@ -2,6 +2,15 @@
 
 A simple URL shortener built with Go. It takes long URLs and generates random 6 character short codes.
 
+## Project structure
+
+urlshortener/
+│
+├── main.go # Application entry point, server setup, and route registration
+├── handlers.go # HTTP handlers for homepage, shortening, and redirecting
+├── shortener.go # Logic for generating random short codes
+└── store.go # In memory map for storing URL mappings
+
 ## How it works
 
 1. POST a long URL to `/shorten`
