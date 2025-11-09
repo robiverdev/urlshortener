@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"math/rand"
 	"net/http"
 )
 
@@ -21,6 +22,17 @@ func main() {
 	log.Fatal(err)
 }
 
+func generateShortCode() string {
+	const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789" // All possible characters for the code
+	const length = 6                                                                 // Empty byte array of length 6
+
+	result := make([]byte, length)
+	for i := 0; i < length; i++ {
+		result[i] = charset[rand.Intn(len(charset))] // Random number between 0 and charset length
+	}
+	return string(result) // Convert byte string and return
+}
+
 type ShortenRequest struct {
 	URL string `json:"url"`
 }
@@ -31,7 +43,7 @@ func shortenHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid JSON", http.StatusBadRequest)
 	}
 
-	shortCode := "abc123" // TODO: make this random
+	shortCode := generateShortCode()
 	urlStore[shortCode] = req.URL
 	if err := json.NewEncoder(w).Encode(map[string]string{"short_code": shortCode}); err != nil {
 		log.Printf("Error encoding response: %v", err)
@@ -40,7 +52,14 @@ func shortenHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func redirectHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("GET redirect")
+	shortCode := r.PathValue("shortCode")
+
+	longURL, exists := urlStore[shortCode]
+	if !exists {
+		http.NotFound(w, r)
+		return
+	}
+	http.Redirect(w, r, longURL, http.StatusFound)
 }
 
 func home(w http.ResponseWriter, r *http.Request) {
