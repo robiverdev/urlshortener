@@ -1,6 +1,6 @@
 # URL Shortener (Go)
 
-Same project, different languages. Learning by rebuilding the same thing multiple times in different programming languages.
+Same project, different languae. Learning by rebuilding the same thing multiple times in different programming languages.
 
 ## How it works
 
