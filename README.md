@@ -37,7 +37,7 @@ Redirects to the original URL.
 
 * Building HTTP servers with Go's standard library
 * JSON encoding and decoding with the `encoding/json` package
-* Using maps for in-memory storage
+* Using maps for in memory storage
 * HTTP redirects and status codes
 * Go's explicit error handling approach
 * Structuring Go projects with proper package organization
