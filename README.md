@@ -46,5 +46,5 @@ Redirects to the original URL.
 ## Other implementations
 
 - [JavaScript/Express](https://github.com/robiverdev/urlshortenerjs)
-- [Rust](link) *(coming soon)*
+- [Rust](https://github.com/robiverdev/urlshortenerrust)
 - [C](link) *(coming soon)*
